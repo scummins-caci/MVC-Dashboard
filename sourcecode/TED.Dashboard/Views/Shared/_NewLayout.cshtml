@@ -1,0 +1,73 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/CommonStyles")
+    @Styles.Render("~/Content/css/libraries")
+    @Styles.Render("~/Content/css/app")
+    <base href="@(Request.ApplicationPath == "/" ? "/" : Request.ApplicationPath + "/")">
+</head>
+<body>
+
+<div id="wrapper">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="@Url.Action("Index", "Dashboard")"><img alt="logo" class="main-logo" src="~/images/ngic-logo.png"/>TED Monitor</a>
+        </div>
+        <!-- /.navbar-header -->
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (Request.IsAuthenticated)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dashboards <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="@((string) ViewBag.UserData.CurrentAction == "Index" ? "active" : "")"><a href="@Url.Action("Index", "Dashboard")"><i class="fa fa-dashboard fa-fw"></i>Workflow</a></li>
+                            <li class="@((string) ViewBag.UserData.CurrentAction == "Search" ? "active" : "")"><a href="@Url.Action("Search", "Dashboard")"><i class="fa fa-search fa-fw"></i>Search Metrics</a></li>
+                            <li class="@((string) ViewBag.UserData.CurrentAction == "Inbasket" ? "active" : "")"><a href="@Url.Action("Inbasket", "Dashboard")"><i class="fa fa-inbox fa-fw"></i>Inbasket</a></li>
+                            <!--<li class="@((string) ViewBag.UserData.CurrentAction == "Dataflow" ? "active" : "")"><a href="@Url.Action("Dataflow", "Dashboard")"><i class="fa fa-exchange fa-fw"></i>Dataflow</a></li>-->
+                            @foreach (var dashboard in ViewBag.UserData.UserDashboards)
+                            {
+                                <li class="@((string) ViewBag.UserData.CurrentAction == "Custom" ? "active" : "")"><a href="@Url.Action("Custom", "Dashboard", new {id = @dashboard})"><i class="fa fa-dashboard fa-fw"></i>@dashboard Dashboard</a></li>
+                            }
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Inbasket <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="@((string) ViewBag.UserData.CurrentAction == "Basic" ? "active" : "")"><a href="@Url.Action("Basic", "Inbasket")"><i class="fa fa-inbox fa-fw"></i>Basic View</a></li>
+                            <li class="@((string) ViewBag.UserData.CurrentAction == "Component" ? "active" : "")"><a href="@Url.Action("Component", "Inbasket")"><i class="fa fa-inbox fa-fw"></i>Component View</a></li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right signin">
+                @Html.Partial("_LoginPartial")
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-content-wrapper">
+        @RenderBody()
+    </div>
+
+    @Html.Partial("_AlertBox")
+</div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+

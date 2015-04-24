@@ -1,0 +1,32 @@
+﻿<table data-bind="delegatedHandler: ['click']" class="table table-responsive table-condensed table-bordered table-striped table-hover">
+    <thead>
+        <tr id="workitemHeader">
+            <th style="width:29px"></th>
+            <!-- ko foreach: { data:Columns, afterRender: columnsRendered } -->
+            <th data-bind="visible: columnVisible" data-click="sortColumn">
+                <!-- ko text: displayName --><!--/ko-->
+                <i data-bind="css: { 'fa-sort': columnSort() === 'none', 'fa-sort-asc': columnSort() === 'asc', 'fa-sort-desc': columnSort() === 'desc' }" class="fa" style="margin-left: 10px"></i>
+            </th>
+            <!--/ko-->
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Items">
+        <tr data-bind="css: { 'selected': selected != undefined ? selected : false }">
+            <!-- action menu-->
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-navicon"></i>
+                    </button>
+                    <ul class="dropdown-menu" roles="menu">
+                        <li role="presentation"><a role="menuitem" href="#">forward</a></li>
+                        <li role="presentation"><a role="menuitem" href="#">edit</a></li>
+                    </ul>
+                </div>
+            </td>
+            <!-- ko foreach: $parent.Columns -->
+            <td data-click="rowSelected" data-bind="visible: columnVisible, text: $parent[$data.columnName]" unselectable="on"></td>
+            <!--/ko-->
+        </tr>
+    </tbody>
+</table>

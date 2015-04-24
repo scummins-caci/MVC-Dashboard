@@ -1,0 +1,10 @@
+﻿    <!-- using ko template binding for animation -->
+<div id="AlertArea" data-bind="foreach: alerts, fadeVisible: alerts().length > 0">
+    <div class="alert" data-bind="css: {    'alert-success': type === 'success',
+                                            'alert-info': type === 'info',
+                                            'alert-warning': type === 'warning',
+                                            'alert-danger': type === 'alert'
+                                        }" role="alert">
+        <span data-bind="text: message"></span>
+    </div>
+</div>

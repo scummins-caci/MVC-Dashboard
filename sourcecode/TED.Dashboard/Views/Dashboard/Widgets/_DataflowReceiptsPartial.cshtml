@@ -1,0 +1,184 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "dfr_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+    <!-- list of receipts -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i class="fa fa-exchange fa-fw"></i>Dataflow Records
+            <a href="#" class="pull-right " data-bind="click: refresh"><i class="fa fa-refresh"></i></a>
+        </div>
+        <div class="panel-body">
+            <div class="widget-loading" data-bind="visible: receiptsLoading"><img src="~/images/ajax-widgetloader.gif"/></div>
+            <table class="table table-hover table-responsive" data-bind="visible: !receiptsLoading()">
+                <thead>
+                    <tr><th>Harmony Number</th><th>Record Type</th><th>Action</th><th>Extract Date</th></tr>
+                </thead>
+                <tbody data-bind="foreach: receipts">
+                    <tr class="clickable" data-bind="click: $parent.showChangeInfo">
+                        <td data-bind="text: HarmonyNumber"></td>
+                        <td data-bind="text: ReceiptType"></td>
+                        <td data-bind="text: Action"></td>
+                        <td data-bind="text: DisplayExtractDate"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="pager">
+                <div class="pull-left">
+                    <span data-bind="text: startIndex"></span>-<span data-bind="text: endIndex"></span> of <span data-bind="text: receiptCount"></span>
+                </div>
+                <div class="pull-right">
+                    <a href="#" data-bind="click: previous, visible: hasPrevious"><i class="fa fa-chevron-left"></i></a>
+                    <span data-bind="text: currentPage"></span>
+                    <a href="#" data-bind="click: next, visible: hasNext"><i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<!-- modal goes here -->
+<script type="text/html" id="changeinfo-template">
+    <div class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" data-bind="click: Close">&times;</button>
+                    <h4>Change Information</h4>
+                </div>
+                
+                <div class="modal-body">
+                    
+                    <!-- change info -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-info fa-fw"></i>Change Info
+                        </div>
+                        <div class="panel-body">
+                            <div class="widget-loading" data-bind="visible: changesLoading"><img src="../images/ajax-widgetloader.gif"/></div>
+                            <table class="table" data-bind="visible: !changesLoading()">
+                                <thead>
+                                    <tr><th>Change id</th><th>Harmony Number</th><th>Record Type</th><th>Action</th><th>Extract Date</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td data-bind="text: selectedItem() ? selectedItem().ChangeId : ''"></td>
+                                        <td data-bind="text: selectedItem() ? selectedItem().HarmonyNumber : ''"></td>
+                                        <td data-bind="text: selectedItem() ? selectedItem().ReceiptType : ''"></td>
+                                        <td data-bind="text: selectedItem() ? selectedItem().Action : ''"></td>
+                                        <td data-bind="text: selectedItem() ?  selectedItem().ExtractDate : ''"></td>
+                                    </tr>  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- meta routes -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-info fa-fw"></i>Meta Routes
+                        </div>
+                        <div class="panel-body" style="overflow: auto">
+                            <div class="widget-loading" data-bind="visible: changesLoading"><img src="../images/ajax-widgetloader.gif"/></div>
+                            <table class="table" data-bind="visible: !changesLoading()">
+                                <thead>
+                                    <tr><th>Meta Id</th><th>Created</th><th>Network</th><th>Routed On</th><th>Processed On</th><th>Files Sent On</th><th>Xml Sent On</th><th>Status</th></tr>
+                                </thead>
+                                <tbody data-bind="foreach: selectedRouteInfo() ? selectedRouteInfo().DocumentMetaRoutes : []">
+                                    <tr>
+                                        <td data-bind="text: MetaId"></td>
+                                        <td data-bind="text: DateCreated"></td>
+                                        <td data-bind="text: Network"></td>
+                                        <td data-bind="text: RoutedOn"></td>
+                                        <td data-bind="text: ProcessedOn"></td>
+                                        <td data-bind="text: FilesSentOn"></td>
+                                        <td data-bind="text: XmlSentOn"></td>
+                                        <td data-bind="text: ProcessedStatus"></td>
+                                    </tr>  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- binary routes -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-info fa-fw"></i>Binary Routes
+                        </div>
+                        <div class="panel-body" style="overflow: auto">
+                            <div class="widget-loading" data-bind="visible: changesLoading"><img src="../images/ajax-widgetloader.gif"/></div>
+                            <table class="table" data-bind="visible: !changesLoading()">
+                                <thead>
+                                    <tr><th>Id</th><th>DestinationId</th><th>File Info Sent On</th><th>Xml Sent On</th><th>Processed On</th><th>Status</th></tr>
+                                </thead>
+                                <tbody  data-bind="foreach: selectedRouteInfo() ? binaryRoutes : []">
+                                    <tr>
+                                        <td data-bind="text: Id"></td>
+                                        <td data-bind="text: DestinationId"></td>
+                                        <td data-bind="text: FileInfoSentOn"></td>
+                                        <td data-bind="text: XmlSentOn"></td>
+                                        <td data-bind="text: ProcessedOn"></td>
+                                        <td data-bind="text: ProcessedStatus"></td>
+                                    </tr>  
+                                </tbody>
+                            </table>
+                                  <div id="bpager">
+                                <div class="pull-left">
+                                    <span data-bind="text: bStartIndex"></span>-<span data-bind="text: bEndIndex"></span> of <span data-bind="text: bTotalItems"></span>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" data-bind="click: bPrevious, visible: bHasPrevious"><i class="fa fa-chevron-left"></i></a>
+                                    <span data-bind="text: bCurrentPage"></span>
+                                    <a href="#" data-bind="click: bNext, visible: bHasNext"><i class="fa fa-chevron-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- scan routes -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-info fa-fw"></i>Scanned Item Routes
+                        </div>
+                        <div class="panel-body" style="overflow: auto">
+                            <div class="widget-loading" data-bind="visible: changesLoading"><img src="../images/ajax-widgetloader.gif"/></div>
+                            <table class="table" data-bind="visible: !changesLoading()">
+                                <thead>
+                                    <tr><th>Id</th><th>DestinationId</th><th>File Info Sent On</th><th>Xml Sent On</th><th>Processed On</th><th>Status</th></tr>
+                                </thead>
+                                <tbody  data-bind="foreach: selectedRouteInfo() ? selectedRouteInfo().ScanRoutes : []">
+                                    <tr>
+                                        <td data-bind="text: Id"></td>
+                                        <td data-bind="text: DestinationId"></td>
+                                        <td data-bind="text: FileInfoSentOn"></td>
+                                        <td data-bind="text: XmlSentOn"></td>
+                                        <td data-bind="text: ProcessedOn"></td>
+                                        <td data-bind="text: ProcessedStatus"></td>
+                                    </tr>  
+                                    <tr>
+                                        <td colspan="6">Path: <span data-bind="text: PathInfo"></span></td> 
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary" data-bind="click: Close">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/DataflowReceiptsViewModel.js", "viewmodels/DataflowReceiptsViewModel", 
+                            (string)ViewBag.BindId, new[] { "widgets", "common" });
+}

@@ -1,0 +1,185 @@
+create table "EF_TEST"."CustomDashboards"
+(
+    "DashboardID" number(10, 0) not null, 
+    "Name" nvarchar2(200) null, 
+    "DateCreated" date not null, 
+    "CreatedBy" number(10, 0) not null, 
+    "IsPublic" number(1, 0) not null,
+    constraint "PK_CustomDashboards" primary key ("DashboardID")
+)
+/
+
+create sequence "EF_TEST"."SQ_CustomDashboards"
+/
+
+create or replace trigger "EF_TEST"."TR_CustomDashboards"
+before insert on "EF_TEST"."CustomDashboards"
+for each row
+begin
+  select "EF_TEST"."SQ_CustomDashboards".nextval into :new."DashboardID" from dual;
+end;
+/
+
+create table "EF_TEST"."UserParameters"
+(
+    "ID" number(10, 0) not null, 
+    "UserID" number(10, 0) not null,
+    constraint "PK_UserParameters" primary key ("ID")
+)
+/
+
+create sequence "EF_TEST"."SQ_UserParameters"
+/
+
+create or replace trigger "EF_TEST"."TR_UserParameters"
+before insert on "EF_TEST"."UserParameters"
+for each row
+begin
+  select "EF_TEST"."SQ_UserParameters".nextval into :new."ID" from dual;
+end;
+/
+
+create table "EF_TEST"."Widgets"
+(
+    "WidgetID" number(10, 0) not null, 
+    "DisplayName" nvarchar2(200) null, 
+    "ControlName" nvarchar2(200) null,
+    constraint "PK_Widgets" primary key ("WidgetID")
+)
+/
+
+create sequence "EF_TEST"."SQ_Widgets"
+/
+
+create or replace trigger "EF_TEST"."TR_Widgets"
+before insert on "EF_TEST"."Widgets"
+for each row
+begin
+  select "EF_TEST"."SQ_Widgets".nextval into :new."WidgetID" from dual;
+end;
+/
+
+create table "EF_TEST"."UserParametersCustomDashboards"
+(
+    "UserParameters_ID" number(10, 0) not null, 
+    "CustomDashboard_DashboardID" number(10, 0) not null,
+    constraint "PK_UserParametersCu_1572748426" primary key ("UserParameters_ID", "CustomDashboard_DashboardID")
+)
+/
+
+create table "EF_TEST"."WidgetCustomDashboards"
+(
+    "Widget_WidgetID" number(10, 0) not null, 
+    "CustomDashboard_DashboardID" number(10, 0) not null,
+    constraint "PK_WidgetCustomDashboards" primary key ("Widget_WidgetID", "CustomDashboard_DashboardID")
+)
+/
+
+begin
+  execute immediate
+  'create unique index "EF_TEST"."IX_CustomDashboards_Name" on "EF_TEST"."CustomDashboards" ("Name")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+begin
+  execute immediate
+  'create unique index "EF_TEST"."IX_Widgets_DisplayName" on "EF_TEST"."Widgets" ("DisplayName")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+begin
+  execute immediate
+  'create index "EF_TEST"."IX_UserParametersCus_988667905" on "EF_TEST"."UserParametersCustomDashboards" ("UserParameters_ID")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+begin
+  execute immediate
+  'create index "EF_TEST"."IX_UserParametersCu_1036447443" on "EF_TEST"."UserParametersCustomDashboards" ("CustomDashboard_DashboardID")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+begin
+  execute immediate
+  'create index "EF_TEST"."IX_WidgetCustomDash_1866953086" on "EF_TEST"."WidgetCustomDashboards" ("Widget_WidgetID")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+begin
+  execute immediate
+  'create index "EF_TEST"."IX_WidgetCustomDash_2044806204" on "EF_TEST"."WidgetCustomDashboards" ("CustomDashboard_DashboardID")';
+exception
+  when others then
+    if sqlcode <> -1408 then
+      raise;
+    end if;
+end;
+/
+
+alter table "EF_TEST"."UserParametersCustomDashboards" add constraint "FK_UserParametersCu_1128755724" foreign key ("UserParameters_ID") references "EF_TEST"."UserParameters" ("ID") on delete cascade
+/
+
+alter table "EF_TEST"."UserParametersCustomDashboards" add constraint "FK_UserParametersCus_564690558" foreign key ("CustomDashboard_DashboardID") references "EF_TEST"."CustomDashboards" ("DashboardID") on delete cascade
+/
+
+alter table "EF_TEST"."WidgetCustomDashboards" add constraint "FK_WidgetCustomDashb_286727981" foreign key ("Widget_WidgetID") references "EF_TEST"."Widgets" ("WidgetID") on delete cascade
+/
+
+alter table "EF_TEST"."WidgetCustomDashboards" add constraint "FK_WidgetCustomDash_1901012466" foreign key ("CustomDashboard_DashboardID") references "EF_TEST"."CustomDashboards" ("DashboardID") on delete cascade
+/
+
+create table "EF_TEST"."__MigrationHistory"
+(
+    "MigrationId" nvarchar2(150) not null, 
+    "ContextKey" nvarchar2(300) not null, 
+    "Model" blob not null, 
+    "ProductVersion" nvarchar2(32) not null,
+    constraint "PK___MigrationHistory" primary key ("MigrationId", "ContextKey")
+)
+/
+
+declare
+model_blob blob;
+begin
+dbms_lob.createtemporary(model_blob, true);
+dbms_lob.append(model_blob, to_blob(cast('1F8B0800000000000400ED5BCD6EE33610BE17E83B083A165B2BC95EDAC0DE45D6490AA39B1FC4D96D6F012DD18EB012E592541AA3E893F5D047EA2B7468FD93A2442A8E93458B058295447E1CCE7C331C72E87FFEFA7BFCFE318E9C074C599890897B383A701D4CFC2408C96AE2A67CF9FD0FEEFB77DF7E333E0BE247E773D1EEAD68073D099BB8F79CAF8F3D8FF9F738466C14873E4D58B2E4233F893D1424DED1C1C18FDEE1A18701C2052CC719DFA4848731DE3EC0E334213E5EF314451749802396BF872FF32DAA738962CCD6C8C713F78A223FC267D09F6FCE29BCFF3DA15F4680C0F123779D93284420D41C474BD74184241C7110F9F813C3734E13B29AAFE1058A6E376B0CED962862389FCA71D5DC7456074762565ED5B180F253C693D812F0F06DAE264FEE3E48D96EA9465064A63031EBAD3227EE743BC42962F78B04D1C075E4318FA71115ED752ACF4C359270DE38ADADDF94DC018A897F6F9C691AF194E209C129A7287AE35CA78B28F47FC69BDBE40B26139246517D0A3009F8D67801AFAE69B2C6946F6EF0329F5829CAECD475BC2680272394FDDB3A67B39F11FEF6C8752E411CB48870C9999AA6E63CA1F8274C30451C07D788734CC1E4B3006FB5A088210D2AFE16A30149C1F55CE7023D7EC464C5EF272E98D475CEC3471C146F72093E91103C153A719AE2BE414E41B429C542C0622CF1EA3614632B93EBC6CA713E6CFA74D40D336399C90B940F49126144FA712ED143B8DAAA5E42042FA7CC756E70B4FDCAEEC375160B46E2CB35127404DBB0BBD2CED0FA9C26F14D12E5DD5B1BDDDD22BAC2105E6E93BE96F324A5BE85C8BF840120B70B9D7DD308AB7C5484545BB40937F6AAD8D019319A731E1C309A302F1F2F8684897D4607A1AFFEF14CE956E7D2EEDDA4E057BF9B145C1DC4C48CD8831998757F79E665720CE15FD5735F2C3C0DD93A429BBD2C552299A349F43C630DF50CCB582C7B823E5A9B78C00963891F6E456A0DC675B19AD33D238163ECB599AAD538007A071708D7407A106EE27EA768D564987279AA865192D0CE71C65E4D0FDDEA51ADA593B7C374959C45C0315743C7EABCF3E9679C115E8342F0EFF6049F955B24256A82C9F2C0C972A7916725F0E798B7784AC557DD9C141535C1045FE089837BB7C1C944EC412BB32905A830A1045053695326CD2A586BDFBB64CA2B808D2F96139335E40D412DB85743AD4F4A5E7E9A4A3150584B705415D5E393865E599B4269EC0E9DE8FDF0A9BA286275E977D5A985971D5B14C71B9EE67C637C81D66B61D5AA67FEC69967871DD3EFE7F65BFF38C3F07CD67202504A5B8E0479015A61E9AB5884037C1E52C661978816482CACD320569B69A28CC64D8B519540A25AB0F0DFA28BF87FD6ADF3084809401272A564E8BA8A21FBD9AA00D7E8D08BB03D984211A25DA7' as long raw)));
+dbms_lob.append(model_blob, to_blob(cast('07D3244A63D27B26D18597654075A0EC8D394263D7DF94A8F6C11CAFB6F3AFA3D55E9B6355DBFF3A54F556451A7B92E964D6780A6D246F96896844D34600DE1D51A5A5CD9EA77D005AC54BECB42365B11FAD2314EF5E8DC98AA56177D6CAF3077B2BE93AEAF45BEDEDEA1AD6ED15BB901A7BB686F3D73F58387F7D5FD670FFFA87FD73A0B944ABBEAB49E586F96903A2DB237BD61191A5B4F856675EA8EAD6C8C325DC361A092597E23C45D23CBF329454BB644ACABBEB5C42F5C2CB099C35815A525BBB90D14998AC893D51B4F9B1A1DABB82CC9D3ED65892449B7C7F35E450927CB94919DBCA645F4AEAC77982DD5FD95432EEAC89EB80EC0F6120B2ED8C6FA30B44003110ED4E7C1F33369A4621C4D5AA29B4089798F1EC80D23D3C1C1D49B5D1D753A7F4180B22BB62E52B280B92345E602A348EFD30AF9E1F8083038FE1EB41EEEA5D07AE96D5B2FA71287940D4BF47F4A8E534674602FC3871FF7066EC13097F4BF1B1734B53ECFCA99E9E56120CAC2006F0F0F4EA61AF2A9F58576CC337861F5A1EDB7B256AEF846C16A69E6644DBD2CF8B565BF6AEE996E2CB8B448096C24C4D0E1BEC815EB58375C02415567B59241CFD7C6A11A1492CBD4505C0B133FBF54EC110E54C58F88F9D0361E75D85D2CE795B0BDD81B60BF12D83C80EC8D49F303F33951401AC6D2221FC4FA35D14615B7763DA4A8D45E5F550D91B5E91531C415BE7C4CF12F829623E0A5493885D90993C4A094F2B9E5D0113860437C054AC822882C584710A9B2AE538E89A86C40FD7286AD796BA793449A584064A60F9CB295E63225667237D98086074E2520E2B59AA4F4B168570BB739A1A25BA48D063F6FF24498790A4E7D8628F74B53C50D90371CD4EB8944AAFC1B58D67A2677B52A18AB31F3A6ACB15E61B232B0A1A1D640ECCA15E866E5F5D7C7C5D047CC978389C8C2F1D073557B994BB189A22A8EEB71DFDB7B4B2B3E6891B2C12A04C961BCB773B8CEE72D573D7DEDB5C6DA30EBAF1D571E1AB6D0CCDCDA19E09F5ABB5A77DFF74AD55AE71698D368C246A6DAA4A627773AEBCBF6571814E53D3EAD847E92F4798DF9BD3E8D2A0BEFBF47B74FD37F86CD4D75E6CEB5AC33A2E417D1D0AD4DF1B34B88FD8CFB766B0A95FEFE8BF83D8A5164D8B6750879E47A6C5DA67E0CFF32BC8E2B2A65AAF85F5BCF67B55C83658B8AA20C4AF5709F61B2B79D96646964991654812154DA4A3B20BCC51200ABB94874BE473F82C2ABCDB5F3F7C46510A4DCEE2050E66E42AE5EB94C39471BC881A37EF4462D235FEF6466A53E6F1D57AFB83875D4C01C40C4565F08A7C48C32828E53E6F396BD340888C272FA0085B725148596D4AA4CB841802E5EA2B13B55B1CAF23006357648E1EF010D920867DC42BE46F8A62BB1EA4DF104DB58F4F43B482E8C8728CAA3F3C028783F8F1DDBF' as long raw)));
+dbms_lob.append(model_blob, to_blob(cast('6B2056DCB63D0000' as long raw)));
+insert into "EF_TEST"."__MigrationHistory"("MigrationId", "ContextKey", "Model", "ProductVersion")
+values ('201501302031192_AutomaticMigration', 'OracleEntityFramework.Migrations.Configuration', model_blob, '6.1.2-31219');
+end;
+
+
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Executed Search Counts', '_SearchCountsPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Executed Search Audit Info', '_SearchAuditsPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Workflow Log Info', '_WorkflowLogsPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Workflow Service Info', '_WorkflowServicesPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Current Workitem Counts', '_WorkitemCountsPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Current Workitem Status', '_WorkitemStatusPartial.cshtml');
+INSERT INTO "EF_TEST"."Widgets" values("EF_TEST"."SQ_Widgets".nextval, 'Dataflow Records', '_DataflowReceiptsPartial.cshtml');
+commit;

@@ -1,0 +1,201 @@
+﻿html, body {
+    margin:0;
+    padding:0;
+    border: 0;
+}
+
+/* table select behavior */
+
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th  {
+    user-select: none; /* CSS3 (little to no support) */
+    -ms-user-select: none; /* IE 10+ */
+    -moz-user-select: none; /* Gecko (Firefox) */
+    -webkit-user-select: none; /* Webkit (Safari, Chrome) */
+}
+
+.table > thead > tr > td.selected,
+.table > tbody > tr > td.selected,
+.table > tfoot > tr > td.selected,
+.table > thead > tr > th.selected,
+.table > tbody > tr > th.selected,
+.table > tfoot > tr > th.selected,
+.table > thead > tr.selected > td,
+.table > tbody > tr.selected > td,
+.table > tfoot > tr.selected > td,
+.table > thead > tr.selected > th,
+.table > tbody > tr.selected > th,
+.table > tfoot > tr.selected > th {
+  background-color: #08c;
+  color: white;
+}
+.table-hover > tbody > tr > td.selected:hover,
+.table-hover > tbody > tr > th.selected:hover,
+.table-hover > tbody > tr.selected:hover > td,
+.table-hover > tbody > tr:hover > .info,
+.table-hover > tbody > tr.selected:hover > th {
+  background-color: #0075b0;
+  color: white;
+}
+
+.table > tbody > tr > td:hover {
+    cursor: pointer
+}
+
+/* panel display */
+#leftsidebar, #mainview, #rightsidebar {
+    position:absolute;
+    bottom: 0;
+}
+
+#leftsidebar, #mainview, #rightsidebar {
+    top: 100px;
+}
+
+#leftsidebar, #rightsidebar {
+    border: solid 1px #e7e7e7;
+    background-color: #f8f8f8;
+}
+#leftsidebar {
+    width: 250px;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+#rightsidebar {
+    width: 26px;
+    right: 0;
+    z-index: 30;
+}
+
+#mainview {
+    left: 250px;
+    right: 26px;
+    border-top: solid 1px #e7e7e7;
+    overflow-y: auto;
+}
+
+.main-panel {
+    padding: 20px;
+}
+
+.side-panel {
+    padding: 20px 10px;
+}
+
+.lefttoggle, .righttoggle {
+    border: none;
+    background: none;
+    margin: 4px;
+}
+
+.lefttoggle {
+  float: right;
+}
+
+.righttoggle {
+    float: left;
+}
+
+/*  tree styles  */
+
+.sidebar {
+    min-height: 20px;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:4px 5px 0 5px;
+    position:relative
+}
+.tree li::before, .tree li::after {
+    content:'';
+    left:-3px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1px dotted #999;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1px dotted #999;
+    height:20px;
+    top:14px;
+    width:10px
+}
+.tree li span.treeitem {
+    /*border:1px solid #999;*/
+    display:inline-block;
+    padding:3px 3px;
+    text-decoration: none;
+    width: 100%
+}
+
+.tree ul {
+    padding-left: 10px;
+}
+
+.tree li.parent_li span {
+    cursor:pointer
+}
+
+.tree ul.root {
+    padding-left: 0;
+    width: 224px;
+}
+
+.tree>ul>li::before, .tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:30px
+}
+.tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+    /*background:#eee;
+    border:1px solid #94a0b4;
+    color:#000*/
+}
+
+.label-as-badge {
+    border-radius: 1em;
+}
+
+div.body-loading {
+    padding: 150px 0;
+    min-height: 500px;
+}
+div.body-loading img 
+{
+    display: block;
+    margin: auto;
+}
+
+.context-menu {
+    position: fixed;
+    display: none;
+}
+
+.top-toolbar {
+    padding-bottom: 10px;
+}
+
+.panel-heading select {
+    color: black;
+}

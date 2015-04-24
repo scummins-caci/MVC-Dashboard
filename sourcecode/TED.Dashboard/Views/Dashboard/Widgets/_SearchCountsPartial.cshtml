@@ -1,0 +1,32 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "wc_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+    <div class="panel panel-primary" >
+        <div class="panel-heading">
+            <i class="fa fa-line-chart fa-fw"></i>Searches Executed by Day
+            <a href="#" class="pull-right " data-bind="click: refresh"><i class="fa fa-refresh"></i></a>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div id="chart" >
+                <div style="height:250px" data-bind="morris: {type: 'Line', data: searchCounts, xkey: 'DisplayExecuteDate', 
+                                        ykeys: ['SearchesExecuted'], labels: ['Searches Executed'], 
+                                        parseTime: false, resize: true, lineColors: ['#72A0C1'] }">
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/SearchAuditCountsViewModel.js", "viewmodels/SearchAuditCountsViewModel", 
+                        (string) ViewBag.BindId, new[] {"widgets", "common", "charts"});
+}

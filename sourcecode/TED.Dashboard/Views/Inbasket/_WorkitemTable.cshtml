@@ -1,0 +1,40 @@
+﻿<div class="panel panel-primary">
+
+    
+    <div class="panel-heading">
+        Workitems
+        <div class="pull-right">
+            items per page:
+            <select data-bind="value: itemsPerPage" class="btn-xs">
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+            </select>
+        </div>
+    </div>
+    <div class="panel-body table-panel">
+        <div class="body-loading" data-bind="visible: isLoading">
+            <img src="~/images/ajax-widgetloader.gif"/>
+        </div>
+        <div data-bind="visible: !isLoading()">
+            <item-pager params="{ TotalCount: WorkItemCount, PageCount: itemsPerPage, CurrentPage: currentPage }"></item-pager>
+            <dynamic-table params="{ Columns: QueueColumns, Items: WorkItems, Sort: sortColumn, Actions: ItemActions }"></dynamic-table>
+        </div>
+
+        <!-- dropdown menu for selecting columns -->
+        <div class="dropdown clearfix context-menu" id="columnMenu" data-bind="rightClickMenu: { bindItem: 'workitemHeader', closeButton: 'menuButton'} ">
+            <ul class="dropdown-menu" style="display: block; position: static; margin-bottom: 5px;" role="menu" aria-labelledby="columnMenu">
+                <!-- ko foreach: QueueColumns-->
+                    <li role="presentation"><a role="menuitem" href="#"><input type="checkbox" data-bind="checked: columnVisible" /><!-- ko text: displayName--><!--/ko--></a></li>
+                <!--/ko-->
+                <li class="divider"></li>
+                <li>
+                    <a id="menuButton" href="#">Close</a>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+</div>
+

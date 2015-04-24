@@ -1,0 +1,21 @@
+﻿@model TED.Dashboard.Models.ErrorViewModel
+
+@{
+    ViewBag.Title = "Error Occurred";
+}
+
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<div>
+    <h2>
+        Sorry, an error occurred while processing your request.
+    </h2>
+    
+    <div>
+        <h3>@Model.ErrorMessage</h3>
+        <h4>@Model.ErrorOrigin</h4>
+        <h4>@Model.ErrorStack</h4>
+    </div>
+</div>

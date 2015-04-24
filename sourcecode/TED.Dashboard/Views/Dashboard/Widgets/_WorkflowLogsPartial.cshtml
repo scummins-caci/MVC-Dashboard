@@ -1,0 +1,49 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "wld_" + Guid.NewGuid();
+}
+
+<!-- workflow log entries -->
+<div id="@ViewBag.BindId">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i class="fa fa-bell fa-fw"></i> Workflow Notifications
+            <a href="#" class="pull-right " data-bind="click: refresh"><i class="fa fa-refresh"></i></a>
+        </div>
+        <div class="panel-body">
+            <!-- loading gif -->
+            <div class="widget-loading" data-bind="visible: isLoading"><img src="~/images/ajax-widgetloader.gif"/></div>
+            <div class="list-group" data-bind="visible: !isLoading(), foreach: workflowLogs">
+                <a href="#" class="list-group-item" data-bind="click: $parent.showLogEntry">
+                    <i class="fa fa-fw" data-bind="css: { 'fa-flag': Severity == 'WARN', 'fa-warning': Severity == 'ERROR' }"></i><!--ko text: DisplayLocation--><!--/ko--> Entry
+                    <span class="pull-right text-muted small"><em data-bind="text: DisplayTime"></em>
+                    </span>
+                </a>
+            </div>
+            <div id="pager">
+                <div class="pull-left">
+                    <span data-bind="text: startIndex"></span>-<span data-bind="text: endIndex"></span> of <span data-bind="text: logCount"></span>
+                </div>
+                <div class="pull-right">
+                    <a href="#" data-bind="click: previous, visible: hasPrevious"><i class="fa fa-chevron-left"></i></a>
+                    <span data-bind="text: currentPage"></span>
+                    <a href="#" data-bind="click: next, visible: hasNext"><i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- additional ko templates -->
+<script type="text/html" id="log-template">
+    @Html.Partial("Widgets/_LogModal")
+</script>
+<!-- additional ko templates end -->
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/NotificationsViewModel.js", "viewmodels/NotificationsViewModel", 
+                            (string)ViewBag.BindId, new[] { "widgets", "common" });
+}

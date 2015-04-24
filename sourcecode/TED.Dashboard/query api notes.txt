@@ -1,0 +1,8 @@
+http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api#advanced-queries
+https://dev.twitter.com/rest/public/search
+http://www.odata.org/documentation/odata-version-2-0/uri-conventions/
+
+
+http://stackoverflow.com/questions/13310112/custom-attribute-above-a-controller-function
+http://stackoverflow.com/questions/1809042/asp-net-mvc-pass-object-from-custom-action-filter-to-action
+http://www.codeproject.com/Articles/1811/Creating-and-Using-Attributes-in-your-NET-applicat

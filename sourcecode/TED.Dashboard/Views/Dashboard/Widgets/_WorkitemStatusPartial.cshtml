@@ -1,0 +1,29 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "scd_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i class="fa fa-pie-chart fa-fw"></i>Work Items Status
+            <a href="#" class="pull-right " data-bind="click: refresh"><i class="fa fa-refresh"></i></a>
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div id="chart">
+                <div data-bind="morris: {type: 'Donut', data: chartdata, resize: true}"></div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/WorkitemStatusViewModel.js", "viewmodels/WorkitemStatusViewModel", 
+                        (string) ViewBag.BindId, new[] {"widgets", "common", "charts"});
+}

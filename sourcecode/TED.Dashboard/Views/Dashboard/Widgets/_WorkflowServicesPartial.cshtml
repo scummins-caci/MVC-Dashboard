@@ -1,0 +1,125 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "wc_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+    <span class="loading" data-bind="visible: isLoading"><img src="~/images/ajax-loader.gif" /></span>
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <div class="panel" data-bind="css: workflowHostsStatus">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <i class="fa fa-exchange fa-3x"></i>
+                        </div>
+                        <div class="col-xs-10 text-right">
+                            <div class="huge" data-bind="text: workflowHostCount"></div>
+                            <div>Workflow Hosts Running</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" data-bind="click: showWorkflowHostInfo">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="panel" data-bind="css: serviceHostsStatus">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <i class="fa fa-gears fa-3x"></i>
+                        </div>
+                        <div class="col-xs-10 text-right">
+                            <div class="huge" data-bind="text: serviceHostCount"></div>
+                            <div>Service Hosts Running</div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" data-bind="click: showServiceHostInfo">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="panel" data-bind="css: connectorStatus">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <i class="fa fa-tasks fa-3x"></i>
+                        </div>
+                        <div class="col-xs-10 text-right">
+                            <div class="huge"><span data-bind="text: runningConnectorCount"></span> of <span data-bind="text: connectorCount"></span></div>
+                            <div>Services Running</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- this will open the modal -->
+                <a href="#" data-bind="click: showConnectorInfo">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="panel" data-bind="css: processStatus">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <i class="fa fa-sitemap fa-3x"></i>
+                        </div>
+                        <div class="col-xs-10 text-right">
+                            <div class="huge"><span data-bind="text: enabledProcessCount"></span> of <span data-bind="text: processCount"></span></div>
+                            <div>Processes Enabled</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- this will open the modal -->
+                <a href="#" data-bind="click: showProcessInfo">
+                    <div class="panel-footer">
+                        <span class="pull-left">View Details</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- additional ko templates     -->
+<script type="text/html" id="connectors-template">
+    @Html.Partial("Widgets/_AutomatedServicesModal")
+</script>
+
+<script type="text/html" id="hosts-template">
+    @Html.Partial("Widgets/_HostModal")
+</script>
+
+<script type="text/html" id="processes-template">
+    @Html.Partial("Widgets/_ProcessInfoModal")
+</script>
+
+<!-- additional ko templates end -->
+
+<!-- handle javascript for ko binding -->
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/WorkflowServicesViewModel.js", "viewmodels/WorkflowServicesViewModel",
+                            (string)ViewBag.BindId, new[] { "widgets", "common" });
+}
+

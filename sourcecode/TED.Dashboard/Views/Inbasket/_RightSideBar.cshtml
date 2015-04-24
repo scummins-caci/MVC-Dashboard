@@ -1,0 +1,39 @@
+﻿<div id="rightsidebar" data-bind="pinnedSideBar: { maindiv: 'mainview', side: 'right', width: 300, pin: RightPinned, visible: RightVisible, resizing: Resizing }">
+    <button class="righttoggle" data-bind="click: ToggleRightPin">
+        <i class="fa fa-thumb-tack " data-bind="css: { 'fa-rotate-90': !RightPinned() }"></i>
+    </button>
+
+    <!-- add some features here-->
+    <div class="side-panel sidebar" data-bind="visible: RightVisible()">
+
+        <!-- actions -->
+        <div class="btn-toolbar top-toolbar" role="toolbar">
+            <div class="btn-group" role="group">
+                <button data-bind="click: doWork" type="button" class="btn btn-default">do work 1</button>
+                <button data-bind="click: bulkEdit" type="button" class="btn btn-default">modal</button>
+            </div>
+        </div>
+
+        <div id="quickFilters">
+            Quick Filters:
+            <ul>
+                <li><a data-bind="click: function() { addFilter('LoginName', 'UNASSIGNED', 'ne') }" href="#">Assigned Items Only</a></li>
+                <li><a data-bind="click: function() { addFilter('LoginName', 'UNASSIGNED', 'eq') }" href="#">Unassigned Items Only</a></li>
+                <li><a href="#">Assigned to Me</a></li>
+                <li><a data-bind="click: clearFilters" href="#">All Items</a></li>
+            </ul>
+        </div>
+
+        <div>
+            Current Filters:
+            <ul data-bind="foreach: Filters">
+                <li><!-- ko text: column--><!--/ko--> is <!-- ko text: operator--><!--/ko--> eq '<!-- ko text: value--><!--/ko-->'</li>
+            </ul>
+        </div>
+        <!--
+        Users to assign workitems to:
+        <div data-bind="value: selectedUser, select2: { data: QueueUsers(), placeholder: 'select assign user', allowClear: true}" class="select2" style="width: 200px;"></div>
+        -->
+    </div>
+</div>
+

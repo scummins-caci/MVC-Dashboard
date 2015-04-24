@@ -1,0 +1,10 @@
+﻿<div id="pager">
+    <div class="pull-left">
+        <span data-bind="text: startIndex"></span>-<span data-bind="text: endIndex"></span> of <span data-bind="text: itemCount"></span>
+    </div>
+    <div class="pull-right">
+        <a href="#" data-bind="click: previous, visible: hasPrevious"><i class="fa fa-chevron-left"></i></a>
+        <span data-bind="text: currentPage"></span>
+        <a href="#" data-bind="click: next, visible: hasNext"><i class="fa fa-chevron-right"></i></a>
+    </div>
+</div>

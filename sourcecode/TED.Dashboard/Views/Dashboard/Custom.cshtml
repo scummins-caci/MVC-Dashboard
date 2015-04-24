@@ -1,0 +1,20 @@
+﻿@model TED.Dashboard.Models.CustomDashboardViewModel
+
+@{
+    ViewBag.Title = Model.DashboardTitle;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">@Model.DashboardTitle</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<!-- add widgets based on items selected -->
+<div class="row">
+    @foreach (var widget in Model.WidgetControls)
+    {
+        @Html.Partial("Widgets/" + widget);
+    }
+</div>

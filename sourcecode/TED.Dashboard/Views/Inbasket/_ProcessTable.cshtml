@@ -1,0 +1,33 @@
+﻿
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        Processes
+    </div>
+    <div class="panel-body table-panel">
+        <div class="body-loading" data-bind="visible: isLoading">
+            <img src="~/images/ajax-widgetloader.gif" />
+        </div>
+
+        <table data-bind="visible: !isLoading()" class="table table-responsive table-condensed table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th style="width:150px">Name</th>
+                    <th>Description</th>
+                    <th>Assigned Items</th>
+                    <th>Unassigned Items</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: Processes">
+                <tr data-bind="click: $parent.showQueues">
+                    <td data-bind="text: Name"></td>
+                    <td data-bind="text: Description"></td>
+                    <td data-bind="text: AssignedItems"></td>
+                    <td data-bind="text: UnassignedItems"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-footer">paging stuff goes here</div>
+</div>
+

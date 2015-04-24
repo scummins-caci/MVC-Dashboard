@@ -1,0 +1,76 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.BindId = "wc_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <i class="fa fa-info"></i> Search Statistics
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <div class="widget-loading" data-bind="visible: isLoading"><img src="~/images/ajax-widgetloader.gif" /></div>
+            <div class="container-fluid" data-bind="visible: !isLoading()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-responsive table-condensed table-striped">
+                            <caption>top 5 search filters</caption>
+                            <tbody data-bind="foreach: filterStats">
+                            <tr>
+                                <td data-bind="text: Filter"></td>
+                                <td class="small" data-bind="text: Count"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-responsive table-condensed table-striped">
+                            <caption>top 5 searches</caption>
+                            <tbody data-bind="foreach: operandStats">
+                            <tr>
+                                <td data-bind="text: Operand"></td>
+                                <td class="small" data-bind="text: Count"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-responsive table-condensed table-striped">
+                            <caption>top 5 users</caption>
+                            <tbody data-bind="foreach: userStats">
+                                <tr>
+                                    <td data-bind="text: UserName"></td>
+                                    <td class="small" data-bind="text: Count"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-responsive table-condensed table-striped">
+                            <caption>trending searches</caption>
+                            <tbody data-bind="foreach: operandStats">
+                                <tr>
+                                    <td data-bind="text: Operand"></td>
+                                    <td class="small" data-bind="text: Count"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+</div>
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/SearchStatsViewModel.js", "viewmodels/SearchStatsViewModel",
+                        (string)ViewBag.BindId, new[] { "widgets", "common" });
+}

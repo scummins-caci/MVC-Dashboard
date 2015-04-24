@@ -1,0 +1,57 @@
+﻿@using Forloop.HtmlHelpers
+@using TED.Dashboard.Extensions
+
+@{
+    ViewBag.Title = "Basic Inbasket";
+    ViewBag.BindId = "basicinbasket_" + Guid.NewGuid();
+}
+
+<div id="@ViewBag.BindId">
+
+    <h1 class="inbasket-header"><span>Inbasket Basic View</span></h1>
+
+    @Html.Partial("_LeftSideBar")
+
+    <div id="mainview">
+        <div class="main-panel">
+
+            <!-- breadcrumbs -->
+            <ol class="breadcrumb">
+                <li>Inbasket</li>
+                <li data-bind="visible: selectedProcess().ID != undefined, text: selectedProcess().ID != undefined ? selectedProcess().Name : ''"></li>
+                <li data-bind="visible: selectedQueue().ID != undefined, text: selectedQueue().ID != undefined ? selectedQueue().Name : ''"></li>
+            </ol>
+
+            <!-- actions -->
+            <div class="btn-toolbar top-toolbar" role="toolbar">
+                <div class="btn-group" role="group">
+                    <button data-bind="click: doWork" type="button" class="btn btn-default">do work 1</button>
+                    <button data-bind="click: doWork" type="button" class="btn btn-default">do work 2</button>
+                    <button data-bind="click: doWork" type="button" class="btn btn-default">do work 3</button>
+                </div>
+            </div>
+
+            <!-- add table stuff here -->
+            <div data-bind="visible: currentView() == 'process'">
+                @Html.Partial("_ProcessTable")
+            </div>
+            <div data-bind="visible: currentView() == 'queue'">
+                @Html.Partial("_QueueTable")
+            </div>
+            <div data-bind="visible: currentView() == 'workitems'">
+                @Html.Partial("_WorkitemTable")
+            </div>
+        </div>
+    </div>
+
+    @Html.Partial("_RightSideBar")
+
+
+</div>
+
+@using (Html.BeginScriptContext())
+{
+    Html.InitializeWidget("~/Scripts/app/viewmodels/BasicInbasketViewModel.js", "viewmodels/BasicInbasketViewModel",
+                            (string)ViewBag.BindId, new[] { "widgets", "common", "forms" });
+}
+

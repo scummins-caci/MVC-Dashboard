@@ -1,0 +1,37 @@
+﻿    <div class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" aria-hidden="true" data-bind="click: Close">&times;</button>
+                    <h4>Automated Services</h4>
+                </div>
+                <div class="modal-body">
+                    
+                    <!-- table display -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <i class="fa fa-tasks"></i> Services Current Status
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                    <tr><th>Name</th><th>Is Enabled</th><th>Host Name</th><th>Instances</th></tr>
+                                </thead>
+                                <tbody data-bind="foreach: Connectors">
+                                    <tr data-bind="css: {'danger': Instances == 0 }">
+                                        <td data-bind="text: Name"></td>
+                                        <td data-bind="text: IsEnabled"></td>
+                                        <td data-bind="text: HostName"></td>
+                                        <td data-bind="text: Instances"></td>
+                                    </tr>  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-primary" data-bind="click: Close">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>

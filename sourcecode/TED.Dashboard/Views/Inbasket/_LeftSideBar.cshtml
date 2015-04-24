@@ -1,0 +1,33 @@
+﻿<div id="leftsidebar" data-bind="colapsingSideBar: { maindiv: 'mainview', side: 'left', width: 250, show: ShowLeftSideBar(), resizing: Resizing }">
+    <button class="lefttoggle" data-bind="click: ToggleLeftSideBar">
+        <i class="fa fa-angle-double-right" data-bind="css: { 'fa-rotate-180': ShowLeftSideBar() }"></i>
+    </button>
+
+    <!-- add sidebar stuff here -->
+    <div class="sidelist tree sidebar">
+        <ul class="root" data-bind="visible: ShowLeftSideBar(),foreach: Processes">
+            <li class="parent_li">
+                <span class="treeitem" data-bind="treeBranch: display()">
+                    <a href="#" data-bind="click: $parent.showQueues">
+                        <i class="fa fa-plus-square" data-bind="visible: !display()"></i>
+                        <i class="fa fa-minus-square" data-bind="visible: display()"></i>
+                        <!-- ko text: Name--><!--/ko-->
+                        <i class="fa fa-circle-o-notch fa-spin" data-bind="visible: loading"></i>
+                        <span class="label label-primary label-as-badge" data-bind="text: UnassignedItems"></span>
+                    </a>
+                </span>
+                <ul data-bind="foreach: Queues">
+                    <li>
+                        <span class="treeitem">
+                            <a href="#" data-bind="click: function(data, event) { $parents[1].queueSelected($parent, data) }">
+                                <i class="fa fa-inbox"></i>
+                                <!-- ko text: Name--><!--/ko-->
+                                <span class="label label-primary label-as-badge" data-bind="text: UnassignedItems"></span>
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
